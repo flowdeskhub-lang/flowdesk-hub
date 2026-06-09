@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Remove default button/input outlines in favour of Tailwind focus rings */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
