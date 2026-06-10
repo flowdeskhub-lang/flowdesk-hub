@@ -335,6 +335,27 @@ function OrderModal({ order, onClose, onSaved }) {
                 value={form.product_name} onChange={e => set("product_name", e.target.value)} />
             </div>
             <div>
+  <label className={labelCls}>Сума продажу</label>
+  <input
+    type="number"
+    className={inputCls}
+    placeholder="1500"
+    value={form.amount}
+    onChange={e => set("amount", e.target.value)}
+  />
+</div>
+
+<div>
+  <label className={labelCls}>Собівартість</label>
+  <input
+    type="number"
+    className={inputCls}
+    placeholder="900"
+    value={form.cost}
+    onChange={e => set("cost", e.target.value)}
+  />
+</div>
+            <div>
               <label className={labelCls}>Статус</label>
               <select className={inputCls} value={form.status} onChange={e => set("status", e.target.value)}>
                 {STATUSES.map(s => <option key={s}>{s}</option>)}
