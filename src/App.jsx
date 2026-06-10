@@ -424,9 +424,10 @@ const totalProfit = totalRevenue - totalCost;
   const load = useCallback(async () => {
     setLoading(true);
     const { data } = await supabase
-      .from("orders")
-      .select("*")
-      .order("created_at", { ascending: false });
+  .from("orders")
+  .select("*")
+  .eq("user_id", (await supabase.auth.getUser()).data.user?.id)
+  .order("created_at", { ascending: false });
     setOrders(data || []);
     setLoading(false);
   }, []);
