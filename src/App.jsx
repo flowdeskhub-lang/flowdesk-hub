@@ -731,10 +731,161 @@ const totalProfit = totalRevenue - totalCost;
 // APP ROOT — routing between pages
 // ============================================================
 export default function App() {
-  const [page, setPage] = useState("landing"); // "landing" | "track" | "dashboard"
+  const [page, setPage] = useState("landing");
+  const [session, setSession] = useState(null);
+  const [authMode, setAuthMode] = useState("login");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [authError, setAuthError] = useState("");
+  const [authLoading, setAuthLoading] = useState(true);
 
-  if (page === "track")     return <TrackOrder   onBack={() => setPage("landing")} />;
-  if (page === "dashboard") return <Dashboard    onBack={() => setPage("landing")} />;
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      setSession(data.session);
+      setAuthLoading(false);
+    });
+
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setSession(session);
+
+        if (session) {
+          setPage("dashboard");
+        }
+      }
+    );
+
+    return () => {
+      listener.subscription.unsubscribe();
+    };
+  }, []);
+
+  async function handleAuth(e) {
+    e.preventDefault();
+    setAuthError("");
+
+    const result =
+      authMode === "login"
+        ? await supabase.auth.signInWithPassword({
+            email,
+            password,
+          })
+        : await supabase.auth.signUp({
+            email,
+            password,
+          });
+
+    if (result.error) {
+      setAuthError(result.error.message);
+      return;
+    }
+
+    if (authMode === "signup") {
+      setAuthMode("login");
+      setAuthError("Акаунт створено. Тепер увійдіть.");
+    }
+  }
+
+  async function handleLogout() {
+    await supabase.auth.signOut();
+    setPage("landing");
+  }
+
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-gray-500">
+        Завантаження...
+      </div>
+    );
+  }
+
+  if (page === "track") {
+    return <TrackOrder onBack={() => setPage("landing")} />;
+  }
+
+  if (page === "dashboard") {
+    if (!session) {
+      return (
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+          <form
+            onSubmit={handleAuth}
+            className="w-full max-w-md bg-white rounded-2xl shadow-sm border p-6"
+          >
+            <h1 className="text-2xl font-bold mb-2">
+              {authMode === "login"
+                ? "Вхід до FlowDesk Hub"
+                : "Реєстрація"}
+            </h1>
+
+            <p className="text-sm text-gray-500 mb-5">
+              {authMode === "login"
+                ? "Увійдіть, щоб керувати замовленнями."
+                : "Створіть акаунт."}
+            </p>
+
+            <label className="block text-xs font-semibold text-gray-500 mb-1">
+              Email
+            </label>
+
+            <input
+              type="email"
+              className="w-full border rounded-xl px-3 py-2 mb-3"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+
+            <label className="block text-xs font-semibold text-gray-500 mb-1">
+              Пароль
+            </label>
+
+            <input
+              type="password"
+              className="w-full border rounded-xl px-3 py-2 mb-3"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+
+            {authError && (
+              <p className="text-sm text-red-500 mb-3">
+                {authError}
+              </p>
+            )}
+
+            <button className="w-full bg-indigo-600 text-white rounded-xl py-2.5 font-semibold">
+              {authMode === "login"
+                ? "Увійти"
+                : "Зареєструватися"}
+            </button>
+
+            <button
+              type="button"
+              onClick={() =>
+                setAuthMode(
+                  authMode === "login" ? "signup" : "login"
+                )
+              }
+              className="w-full mt-3 text-sm text-indigo-600"
+            >
+              {authMode === "login"
+                ? "Немає акаунта? Зареєструватися"
+                : "Вже є акаунт? Увійти"}
+            </button>
+          </form>
+        </div>
+      );
+    }
+
+    return (
+      <Dashboard
+        onBack={() => setPage("landing")}
+        onLogout={handleLogout}
+        session={session}
+      />
+    );
+  }
+
   return (
     <Landing
       onDash={() => setPage("dashboard")}
