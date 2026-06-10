@@ -403,7 +403,17 @@ function Dashboard({ onBack }) {
   const [modal, setModal] = useState(null); // null | "new" | order object
   const [updatingId, setUpdatingId] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
+const totalRevenue = orders.reduce(
+  (sum, order) => sum + Number(order.amount || 0),
+  0
+);
 
+const totalCost = orders.reduce(
+  (sum, order) => sum + Number(order.cost || 0),
+  0
+);
+
+const totalProfit = totalRevenue - totalCost;
   const load = useCallback(async () => {
     setLoading(true);
     const { data } = await supabase
@@ -515,6 +525,28 @@ function Dashboard({ onBack }) {
 
           <div className="px-6 py-6">
             {/* Stats strip */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+  <div className="bg-white border rounded-xl px-4 py-3 shadow-sm">
+    <p className="text-2xl font-extrabold text-gray-900">
+      {money(totalRevenue)}
+    </p>
+    <p className="text-xs text-gray-400">Оборот</p>
+  </div>
+
+  <div className="bg-white border rounded-xl px-4 py-3 shadow-sm">
+    <p className="text-2xl font-extrabold text-gray-900">
+      {money(totalCost)}
+    </p>
+    <p className="text-xs text-gray-400">Витрати</p>
+  </div>
+
+  <div className="bg-white border rounded-xl px-4 py-3 shadow-sm">
+    <p className="text-2xl font-extrabold text-green-600">
+      {money(totalProfit)}
+    </p>
+    <p className="text-xs text-gray-400">Прибуток</p>
+  </div>
+</div>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
               {STATUSES.map(s => (
                 <div key={s}
