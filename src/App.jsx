@@ -48,7 +48,9 @@ const EMPTY_FORM = {
   instagram: "",
   phone: "",
   product_name: "",
-  status: "Нове замовлення",
+amount: "",
+cost: "",
+status: "Нове замовлення",
   tracking_number: "",
   manager_comment: "",
 };
@@ -56,10 +58,18 @@ const EMPTY_FORM = {
 // ── Helpers ──────────────────────────────────────────────────
 function fmt(dateStr) {
   if (!dateStr) return "—";
+
   return new Date(dateStr).toLocaleString("uk-UA", {
-    day: "2-digit", month: "2-digit", year: "numeric",
-    hour: "2-digit", minute: "2-digit",
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
   });
+}
+function money(value) {
+  const n = Number(value || 0);
+  return n.toLocaleString("uk-UA") + " грн";
 }
 
 function StatusBadge({ status }) {
