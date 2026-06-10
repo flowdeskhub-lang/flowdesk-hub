@@ -286,9 +286,16 @@ function OrderModal({ order, onClose, onSaved }) {
     if (order?.id) {
       result = await supabase.from("orders").update(form).eq("id", order.id).select().single();
     } else {
-      // eslint-disable-next-line no-unused-vars
-      const { id, ...payload } = form;
-      result = await supabase.from("orders").insert(payload).select().single();
+  // eslint-disable-next-line no-unused-vars
+const { id, ...payload } = form;
+
+payload.user_id = (await supabase.auth.getUser()).data.user?.id;
+
+result = await supabase
+  .from("orders")
+  .insert(payload)
+  .select()
+  .single();
     }
     setSaving(false);
     if (result.error) { setErr("Помилка збереження: " + result.error.message); return; }
