@@ -402,7 +402,7 @@ result = await supabase
 // ============================================================
 // DASHBOARD
 // ============================================================
-function Dashboard({ onBack }) {
+function Dashboard({ onBack, onLogout, session }) {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -504,6 +504,22 @@ const totalProfit = totalRevenue - totalCost;
               На головну
             </button>
           </div>
+          <div className="px-3 pb-4">
+  <button
+    onClick={onLogout}
+    className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-red-300 hover:text-white hover:bg-red-700 text-sm transition-colors"
+  >
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H6a2 2 0 01-2-2V7a2 2 0 012-2h5a2 2 0 012 2v1"
+      />
+    </svg>
+    Вийти
+  </button>
+</div>
         </aside>
 
         {/* Main */}
