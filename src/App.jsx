@@ -481,6 +481,7 @@ const totalProfit = totalRevenue - totalCost;
         <button
   onClick={onBack}
  className="px-6 py-6 flex items-center gap-3 hover:opacity-80 transition-opacity"
+          >
   <div>
     <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path
