@@ -478,15 +478,24 @@ const totalProfit = totalRevenue - totalCost;
 
         {/* Sidebar */}
         <aside className="hidden md:flex flex-col w-56 bg-indigo-950 text-white shrink-0">
-          <div className="px-5 py-5 flex items-center gap-2 border-b border-indigo-800">
-            <div className="w-7 h-7 rounded-lg bg-indigo-400 flex items-center justify-center">
-              <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-              </svg>
-            </div>
-            <span className="font-bold text-sm">FlowDesk Hub</span>
-          </div>
+        <button
+  onClick={onBack}
+ className="px-6 py-6 flex items-center gap-3 hover:opacity-80 transition-opacity"
+  <div>
+    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2"
+      />
+    </svg>
+  </div>
+
+  <span className="font-bold text-sm">
+    FlowDesk Hub
+  </span>
+</button>
           <nav className="flex-1 px-3 py-4 space-y-1">
             <div className="px-3 py-2 rounded-lg bg-indigo-800 text-sm font-semibold text-white flex items-center gap-2">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -495,15 +504,6 @@ const totalProfit = totalRevenue - totalCost;
               Замовлення
             </div>
           </nav>
-          <div className="px-3 pb-4">
-            <button onClick={onBack}
-              className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-indigo-300 hover:text-white hover:bg-indigo-800 text-sm transition-colors">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-              </svg>
-              На головну
-            </button>
-          </div>
           <div className="px-3 pb-4">
   <button
     onClick={onLogout}
